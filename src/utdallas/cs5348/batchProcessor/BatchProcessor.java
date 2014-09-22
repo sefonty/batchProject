@@ -1,4 +1,4 @@
-package utdallas.cs4348.batchProcessor;
+package utdallas.cs5348.batchProcessor;
 
 public class BatchProcessor
 {
@@ -8,5 +8,10 @@ public class BatchProcessor
 		// TODO Auto-generated method stub
 		System.out.println("BatchProcessor started");
 	}
-
+	
+	public void executeBatch(Batch batch)
+	{
+		
+	}
+	
 }
