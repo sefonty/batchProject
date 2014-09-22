@@ -11,7 +11,8 @@ public class BatchParser
 		return null;
 	}
 	
-	private Command buildCommand(Element elem)
+	@SuppressWarnings("unused")
+	private Command buildCommand(final Element elem)
 	{
 		return null;
 	}
