@@ -1,2 +1,0 @@
-INDEX VERSION 1.127+/Users/macuser/Dropbox/College/Fall 2014/Operating Systems/Projects/batchProject/specs/.metadata/.plugins/org.eclipse.jdt.core
-2737696954.index
