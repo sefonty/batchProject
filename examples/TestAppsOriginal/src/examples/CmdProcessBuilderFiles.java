@@ -14,10 +14,11 @@ public class CmdProcessBuilderFiles
 	public static void main(String args[]) throws Exception
 	{
 		List<String> command = new ArrayList<String>();
-		command.add("SORT");
-		command.add("/r");
+		command.add("sort");
+		//command.add("/R"); // DOS
+		command.add("-r"); //GNU
 		command.add("randomwords.txt");
-		
+
 		ProcessBuilder builder = new ProcessBuilder();
 		builder.command(command);
 		builder.directory(new File("work"));

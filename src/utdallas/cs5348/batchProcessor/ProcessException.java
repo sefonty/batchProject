@@ -1,4 +1,4 @@
-package examples;
+package utdallas.cs5348.batchProcessor;
 
 /**
  * An exception that should be used to signal problems with the

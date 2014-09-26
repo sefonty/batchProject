@@ -6,5 +6,5 @@ public abstract class Command
 {
 	public abstract String describe();
 	public abstract void execute(String workingDir);
-	public abstract void parse(Element element);
+	public abstract void parse(Element element) throws ProcessException;
 }

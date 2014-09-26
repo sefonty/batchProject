@@ -15,9 +15,9 @@ public class AddLines
 			Reader reader = new InputStreamReader(System.in);
 			BufferedReader breader = new BufferedReader(reader);
 			String lineRead = null;
-			while ((lineRead = breader.readLine()) != null) {
-				int sum = 0;
-				StringTokenizer st = new StringTokenizer(lineRead);
+			int sum = 0;
+			while ((lineRead = breader.readLine()) != null && !lineRead.equals("")) {
+				StringTokenizer st = new StringTokenizer(lineRead, " ");
 				while (st.hasMoreTokens()) {
 					String nums = st.nextToken();
 					try {
@@ -29,14 +29,12 @@ public class AddLines
 						continue;
 					}
 				}
-				System.out.println(sum);
-				System.out.flush();
 			}
-
+			System.out.println(sum);
+			System.out.flush();
 		}
 		catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 	}
-
 }

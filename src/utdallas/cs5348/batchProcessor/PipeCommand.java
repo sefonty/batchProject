@@ -20,7 +20,7 @@ public class PipeCommand extends Command
 	}
 
 	@Override
-	public void parse(Element element)
+	public void parse(Element element) throws ProcessException
 	{
 		// TODO Auto-generated method stub
 		

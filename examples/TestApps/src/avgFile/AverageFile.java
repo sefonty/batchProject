@@ -17,8 +17,8 @@ public class AverageFile
 			Reader reader = new InputStreamReader(System.in);
 			BufferedReader breader = new BufferedReader(reader);
 			String lineRead = null;
-			while ((lineRead = breader.readLine()) != null) {
-				StringTokenizer st = new StringTokenizer(lineRead);
+			while ((lineRead = breader.readLine()) != null && !lineRead.equals("")) {
+				StringTokenizer st = new StringTokenizer(lineRead, " ");
 				while (st.hasMoreTokens()) {
 					String nums = st.nextToken();
 					try {
@@ -32,13 +32,12 @@ public class AverageFile
 					}
 				}
 			}
-			double avg = (total > 0) ? sum/total : 0;
-			System.out.println(avg);
+			double avg = (total > 0) ? (sum/total) : 0;
+			System.out.println("average: " + avg);
 			System.out.flush();
 		}
 		catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 	}
-
 }

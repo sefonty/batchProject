@@ -7,9 +7,15 @@ public class Batch
 	private String workingDir;
 	private Map<String, Command> commands;
 	
+	public Batch(String inputWD)
+	{
+		workingDir = inputWD;
+		System.out.println("created new Batch");
+	}
+	
 	public void addCommand(Command command)
 	{
-		
+		commands.put("key", command);
 	}
 	
 	public String getWorkingDir()
