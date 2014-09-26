@@ -13,6 +13,8 @@ public class BatchProcessor
 		BatchParser myBatchParser = new BatchParser();
 		batch1 = myBatchParser.buildBatch(new File("work/batch1.dos.xml"));
 		
+		executeBatch()
+		
 	}
 	
 	public void executeBatch(Batch batch)
