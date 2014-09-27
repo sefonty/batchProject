@@ -5,18 +5,17 @@ import java.util.Map;
 public class Batch
 {
 	private String workingDir;
-	private Map<Integer, Command> commands;
-	private int createKeyValue = 0; // working directory (wd) command is always index 0
+	private Map<String, Command> commands;
 	
 	public Batch()
 	{
 		System.out.println("created new Batch");
 	}
 	
+	// puts command into Map commands with key set to command's ID tag
 	public void addCommand(Command command)
 	{
-		commands.put(createKeyValue, command);
-		createKeyValue++;
+		commands.put(command.getID(), command);
 	}
 	
 	public String getWorkingDir()
@@ -29,7 +28,7 @@ public class Batch
 		workingDir = inputWorkingDir;
 	}
 	
-	public Map<Integer, Command> getCommands()
+	public Map<String, Command> getCommands()
 	{
 		return commands;
 	}

@@ -25,7 +25,7 @@ public class CmdCommand extends Command
 	}
 
 	@Override
-	public void execute(String workingDir) throws IOException, InterruptedException
+	public void execute(String workingDir, Batch b) throws IOException, InterruptedException, ProcessException
 	{
 		// execute CMD command here (reference example CmdProcessBuilderFiles.java)
 		List<String> command = new ArrayList<String>();
@@ -43,8 +43,25 @@ public class CmdCommand extends Command
 		builder.directory(new File(workingDir));
 		builder.redirectError(new File("error.txt"));
 		
-		if (!(outID.isEmpty() && outID == null))
-			builder.redirectOutput(new File(outID));
+		// for batch5 FILE commands, check element IDs if present for OUT:
+		if (b.getCommands().size() > 0)
+		{	
+			if (!(outID == null || outID.isEmpty()))
+			{
+				boolean foundMatchingID = this.findMatchingID(b, outID);
+				
+				// check OUT tag against all existing ID tags
+				if (foundMatchingID)
+				{
+					builder.redirectOutput(new File(outID));
+				}
+				else // did NOT find matching ID when compared to OUT tag
+				{
+					// throw custom exception here...
+					throw new ProcessException("Unable to locate OUT FileCommand with id " + outID);
+				}
+			}
+		}
 
 		Process process;
 		process = builder.start();
@@ -101,8 +118,24 @@ public class CmdCommand extends Command
 			System.out.println("outID: " + outID);		
 	}
 	
+	@Override
 	public String getID()
 	{
 		return id;
+	}
+	
+	private boolean findMatchingID(Batch b, String key)
+	{
+		Command cmd = null;
+		
+		// check key against all existing keys
+		if (b.getCommands().containsKey(key))
+		{
+			cmd = b.getCommands().get(key);
+			if (cmd.getClass().equals(FileCommand.class)) // may or may not need this line
+				return true;
+		}
+		
+		return false; // did NOT find matching ID when compared to key
 	}
 }

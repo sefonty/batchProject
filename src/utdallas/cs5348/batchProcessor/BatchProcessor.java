@@ -3,12 +3,13 @@ package utdallas.cs5348.batchProcessor;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class BatchProcessor
 {
 	public static Batch batch1, batch2, batch3, batch4, batch5;
 	
-	public static void main(String[] args) throws IOException, InterruptedException
+	public static void main(String[] args) throws IOException, InterruptedException, ProcessException
 	{	
 		System.out.println("BatchProcessor started");
 		
@@ -30,14 +31,15 @@ public class BatchProcessor
 		System.out.println("all batches executed!");
 	}
 	
-	public static void executeBatch(Batch batch) throws IOException, InterruptedException
+	public static void executeBatch(Batch batch) throws IOException, InterruptedException, ProcessException
 	{	
-		Map<Integer, Command> batchCommands = batch.getCommands();
-		for (int i = 0; i < batchCommands.size(); i++)
+		Map<String, Command> batchCommands = batch.getCommands();
+		
+		// using Entry allows iterating through a map structure
+		for (Entry<String, Command> entry : batchCommands.entrySet())
 		{
-			batchCommands.get(i).describe();
-			batchCommands.get(i).execute(batch.getWorkingDir());
-
+			batchCommands.get(entry.getKey()).describe();
+			batchCommands.get(entry.getKey()).execute(batch.getWorkingDir(), batch);
 		}
 		System.out.println("batch completed execution!");
 	}

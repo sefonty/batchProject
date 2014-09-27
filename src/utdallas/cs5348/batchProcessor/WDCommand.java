@@ -11,16 +11,20 @@ public class WDCommand extends Command
 	public String describe()
 	{
 		if (id != null)
-			return "CmdCommand executing: id=" + id + " path=" + path +
+			return "WDCommand executing: id=" + id + " path=" + path +
 					" in=" + inID + " out=" + outID;
 		else
-			return "Warning: CmdCommand: no cammand to execute";
+			return "Warning: WDCommand: no cammand to execute";
 	}
 
 	@Override
-	public void execute(String workingDir)
+	public void execute(String workingDir, Batch b) throws ProcessException
 	{
-		// execute CMD command here (reference example CmdProcessBuilderFiles.java)
+		// only need to set workingDir for batch
+		if (path == null || path.isEmpty())
+			throw new ProcessException("Missing PATH in WD Command");
+		else
+			b.setWorkingDir(path);
 	}
 
 	/** 
@@ -31,21 +35,22 @@ public class WDCommand extends Command
 	public void parse(Element element) throws ProcessException
 	{
 		// id=
-		System.out.println("CmdCommand: parsing element");
+		System.out.println("WDCommand: parsing element");
 		id = element.getAttribute("id");
 		if (id == null || id.isEmpty())
-			throw new ProcessException("Missing ID in CMD Command");
+			throw new ProcessException("Missing ID in WD Command");
 		System.out.println("ID: " + id);
 		
 		// path=
 		path = element.getAttribute("path");
 		if (path == null || path.isEmpty())
-			throw new ProcessException("Missing PATH in CMD Command");
+			throw new ProcessException("Missing PATH in WD Command");
 		System.out.println("Path: " + path);
 	}
 	
-	public String getWorkDirPath()
+	@Override
+	public String getID()
 	{
-		return path;
+		return id;
 	}
 }

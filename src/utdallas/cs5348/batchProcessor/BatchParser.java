@@ -36,39 +36,8 @@ public class BatchParser
 				if (node.getNodeType() == Node.ELEMENT_NODE)
 				{
 					Element elem = (Element) node;
-					
-					// for batch5, check element IDs if present for OUT:
-					if ("cmd".equalsIgnoreCase(elem.getNodeName()) &&
-							newBatch.getCommands().size() > 0)
-					{
-						String tempOut = elem.getAttribute("out");
-						Command c = new CmdCommand();
-						boolean foundMatchingID = false;
-						
-						// check OUT tag against all pre-existing ID tags
-						for (int cIdx = 0; cIdx < newBatch.getCommands().size(); cIdx++)
-						{
-							c = newBatch.getCommands().get(0);
-							if (((CmdCommand) c).getID().equals(tempOut))
-								foundMatchingID = true;
-						}
-						
-						if (foundMatchingID)
-						{
-							Command newCommand = buildCommand(elem);
-							newBatch.addCommand(newCommand);
-						}
-						else // did NOT find matching ID when compared to OUT tag
-						{
-							// throw exception here...
-							System.out.println("Could not find matching ID for outID: " + tempOut);
-						}
-					}
-					else
-					{
-						Command newCommand = buildCommand(elem);
-						newBatch.addCommand(newCommand);
-					}
+					Command newCommand = buildCommand(elem);
+					newBatch.addCommand(newCommand);
 				}
 			}
 		}
@@ -81,7 +50,7 @@ public class BatchParser
 		return newBatch;
 	}
 	
-	private Command buildCommand(final Element elem) throws ProcessException
+	private Command buildCommand(Element elem) throws ProcessException
 	{
 		String cmdName = elem.getNodeName();
 		Command cmd;
@@ -113,9 +82,7 @@ public class BatchParser
 			cmd.parse(elem);
 		}
 		else
-		{
 			throw new ProcessException("Unknown command " + cmdName + " from: " + elem.getBaseURI());
-		}
 		
 		return cmd;
 	}
