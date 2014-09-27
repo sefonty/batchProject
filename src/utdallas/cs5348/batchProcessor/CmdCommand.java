@@ -70,6 +70,6 @@ public class CmdCommand extends Command
 		// out=
 		outID = element.getAttribute("out");
 		if (!(outID == null || outID.isEmpty()))
-			System.out.println("outID: " + outID);
+			System.out.println("outID: " + outID);		
 	}
 }

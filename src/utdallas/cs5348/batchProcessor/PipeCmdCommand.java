@@ -23,7 +23,5 @@ public class PipeCmdCommand extends Command
 	public void parse(Element element) throws ProcessException
 	{
 		// TODO Auto-generated method stub
-		
 	}
-
 }
