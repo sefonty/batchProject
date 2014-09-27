@@ -25,23 +25,27 @@ public class CmdCommand extends Command
 	@Override
 	public void execute(String workingDir)
 	{
-		System.out.println(this.describe());
+		// execute CMD command here (reference example CmdProcessBuilderFiles.java)
 	}
 
 	@Override
+	// save tag values of the command element into the appropriate variables
 	public void parse(Element element) throws ProcessException
 	{
+		// id=
 		System.out.println("CmdCommand: parsing element");
 		id = element.getAttribute("id");
 		if (id == null || id.isEmpty())
 			throw new ProcessException("Missing ID in CMD Command");
 		System.out.println("ID: " + id);
 		
+		// path=
 		path = element.getAttribute("path");
 		if (path == null || path.isEmpty())
 			throw new ProcessException("Missing PATH in CMD Command");
 		System.out.println("Path: " + path);
 
+		// args=
 		// Arguments must be passed to ProcessBuilder as a list of
 		// individual strings. 
 		cmdArgs = new ArrayList<String>();
@@ -56,20 +60,16 @@ public class CmdCommand extends Command
 			}
 		}
 		for (String argi: cmdArgs)
-		{
 			System.out.println("Arg " + argi);
-		}
 
+		// in=
 		inID = element.getAttribute("in");
 		if (!(inID == null || inID.isEmpty()))
-		{
 			System.out.println("inID: " + inID);
-		}
 
+		// out=
 		outID = element.getAttribute("out");
 		if (!(outID == null || outID.isEmpty()))
-		{
 			System.out.println("outID: " + outID);
-		}
 	}
 }
