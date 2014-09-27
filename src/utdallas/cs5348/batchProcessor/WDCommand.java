@@ -6,8 +6,8 @@ public class WDCommand extends Command
 {
 	private String id, path, inID, outID;
 
-	@Override
 	// used to print a message to the console when the Command is executed
+	@Override
 	public String describe()
 	{
 		if (id != null)
@@ -23,8 +23,11 @@ public class WDCommand extends Command
 		// execute CMD command here (reference example CmdProcessBuilderFiles.java)
 	}
 
+	/** 
+	 * Parsing for WD element:
+	 * Save tag values into the appropriate variables
+	 */
 	@Override
-	// save tag values of the command element into the appropriate variables
 	public void parse(Element element) throws ProcessException
 	{
 		// id=

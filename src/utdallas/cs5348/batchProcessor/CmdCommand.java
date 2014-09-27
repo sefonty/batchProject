@@ -1,5 +1,7 @@
 package utdallas.cs5348.batchProcessor;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -11,8 +13,8 @@ public class CmdCommand extends Command
 	private String id, path, inID, outID;
 	private List<String> cmdArgs;
 
-	@Override
 	// used to print a message to the console when the Command is executed
+	@Override
 	public String describe()
 	{
 		if (id != null)
@@ -23,13 +25,39 @@ public class CmdCommand extends Command
 	}
 
 	@Override
-	public void execute(String workingDir)
+	public void execute(String workingDir) throws IOException, InterruptedException
 	{
 		// execute CMD command here (reference example CmdProcessBuilderFiles.java)
+		List<String> command = new ArrayList<String>();
+		command.add(path);
+		for (String s : cmdArgs)
+		{
+			command.add(s);
+		}		
+		
+		if (!(inID.isEmpty() && inID == null))
+			command.add(inID);
+
+		ProcessBuilder builder = new ProcessBuilder();
+		builder.command(command);
+		builder.directory(new File(workingDir));
+		builder.redirectError(new File("error.txt"));
+		
+		if (!(outID.isEmpty() && outID == null))
+			builder.redirectOutput(new File(outID));
+
+		Process process;
+		process = builder.start();
+		process.waitFor();
+		
+		System.out.println("CmdCommand finished executing");
 	}
 
+	/** 
+	 * Parsing for CMD element:
+	 * Save tag values into the appropriate variables
+	 */
 	@Override
-	// save tag values of the command element into the appropriate variables
 	public void parse(Element element) throws ProcessException
 	{
 		// id=
@@ -71,5 +99,10 @@ public class CmdCommand extends Command
 		outID = element.getAttribute("out");
 		if (!(outID == null || outID.isEmpty()))
 			System.out.println("outID: " + outID);		
+	}
+	
+	public String getID()
+	{
+		return id;
 	}
 }

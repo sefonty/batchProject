@@ -1,13 +1,14 @@
 package utdallas.cs5348.batchProcessor;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 public class BatchProcessor
 {
 	public static Batch batch1, batch2, batch3, batch4, batch5;
 	
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException, InterruptedException
 	{	
 		System.out.println("BatchProcessor started");
 		
@@ -29,13 +30,14 @@ public class BatchProcessor
 		System.out.println("all batches executed!");
 	}
 	
-	public static void executeBatch(Batch batch)
+	public static void executeBatch(Batch batch) throws IOException, InterruptedException
 	{	
 		Map<Integer, Command> batchCommands = batch.getCommands();
 		for (int i = 0; i < batchCommands.size(); i++)
 		{
 			batchCommands.get(i).describe();
 			batchCommands.get(i).execute(batch.getWorkingDir());
+
 		}
 		System.out.println("batch completed execution!");
 	}
