@@ -10,4 +10,5 @@ public abstract class Command
 	public abstract void execute(String workingDir, Batch batch) throws IOException, InterruptedException, ProcessException;
 	public abstract void parse(Element element) throws ProcessException;
 	public abstract String getID();
+	public abstract String getPath();
 }

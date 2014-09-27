@@ -26,7 +26,7 @@ public class CmdCommand extends Command
 
 	@Override
 	public void execute(String workingDir, Batch b) throws IOException, InterruptedException, ProcessException
-	{
+	{		
 		// execute CMD command here (reference example CmdProcessBuilderFiles.java)
 		List<String> command = new ArrayList<String>();
 		command.add(path);
@@ -35,13 +35,17 @@ public class CmdCommand extends Command
 			command.add(s);
 		}		
 		
-		if (!(inID.isEmpty() && inID == null))
-			command.add(inID);
+		if (!(inID == null || inID.isEmpty()))
+		{
+			// determine actual file name needed for input:			
+			String inFileName = b.getCommands().get(inID).getPath();
+			command.add(inFileName);
+		}
 
 		ProcessBuilder builder = new ProcessBuilder();
 		builder.command(command);
 		builder.directory(new File(workingDir));
-		builder.redirectError(new File("error.txt"));
+		builder.redirectError(new File(workingDir + "/" + "error.txt"));
 		
 		// for batch5 FILE commands, check element IDs if present for OUT:
 		if (b.getCommands().size() > 0)
@@ -53,7 +57,9 @@ public class CmdCommand extends Command
 				// check OUT tag against all existing ID tags
 				if (foundMatchingID)
 				{
-					builder.redirectOutput(new File(outID));
+					// determine actual file name needed for output:
+					String outFileName = b.getCommands().get(outID).getPath();
+					builder.redirectOutput(new File(workingDir + "/" + outFileName));
 				}
 				else // did NOT find matching ID when compared to OUT tag
 				{
@@ -81,13 +87,13 @@ public class CmdCommand extends Command
 		System.out.println("CmdCommand: parsing element");
 		id = element.getAttribute("id");
 		if (id == null || id.isEmpty())
-			throw new ProcessException("Missing ID in CMD Command");
+			throw new ProcessException("Missing ID in CMDCommand");
 		System.out.println("ID: " + id);
 		
 		// path=
 		path = element.getAttribute("path");
 		if (path == null || path.isEmpty())
-			throw new ProcessException("Missing PATH in CMD Command");
+			throw new ProcessException("Missing PATH in CMDCommand");
 		System.out.println("Path: " + path);
 
 		// args=
@@ -122,6 +128,12 @@ public class CmdCommand extends Command
 	public String getID()
 	{
 		return id;
+	}
+	
+	@Override
+	public String getPath()
+	{
+		return path;
 	}
 	
 	private boolean findMatchingID(Batch b, String key)

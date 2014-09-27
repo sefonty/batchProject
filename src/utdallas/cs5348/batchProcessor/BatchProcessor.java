@@ -14,8 +14,10 @@ public class BatchProcessor
 		System.out.println("BatchProcessor started");
 		
 		BatchParser myBatchParser = new BatchParser();
-		batch1 = myBatchParser.buildBatch(new File("work/batch1.gnu.xml"));
+		batch1 = myBatchParser.buildBatch(new File("work/batch1.mac.xml"));
+		//batch1 = myBatchParser.buildBatch(new File("work/batch1.gnu.xml"));
 		//batch1 = myBatchParser.buildBatch(new File("work/batch1.dos.xml"));
+		batch2 = myBatchParser.buildBatch(new File("work/batch2.mac.xml"));
 		//batch2 = myBatchParser.buildBatch(new File("work/batch2.gnu.xml"));
 		//batch2 = myBatchParser.buildBatch(new File("work/batch2.dos.xml"));
 		//batch3 = myBatchParser.buildBatch(new File("work/batch3.xml"));
@@ -23,7 +25,7 @@ public class BatchProcessor
 		//batch5 = myBatchParser.buildBatch(new File("work/batch5.xml"));
 		
 		executeBatch(batch1);
-		//executeBatch(batch2);
+		executeBatch(batch2);
 		//executeBatch(batch3);
 		//executeBatch(batch4);
 		//executeBatch(batch5);
@@ -38,7 +40,10 @@ public class BatchProcessor
 		// using Entry allows iterating through a map structure
 		for (Entry<String, Command> entry : batchCommands.entrySet())
 		{
-			batchCommands.get(entry.getKey()).describe();
+			System.out.println(batchCommands.get(entry.getKey()).describe());
+			
+			// working directory null until executing a WDCommand
+			System.out.println("executing key: " + entry.getKey());
 			batchCommands.get(entry.getKey()).execute(batch.getWorkingDir(), batch);
 		}
 		System.out.println("batch completed execution!");

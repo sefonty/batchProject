@@ -19,12 +19,13 @@ public class WDCommand extends Command
 
 	@Override
 	public void execute(String workingDir, Batch b) throws ProcessException
-	{
+	{		
 		// only need to set workingDir for batch
 		if (path == null || path.isEmpty())
 			throw new ProcessException("Missing PATH in WD Command");
 		else
 			b.setWorkingDir(path);
+		System.out.println("WDCommand finished executing");
 	}
 
 	/** 
@@ -38,13 +39,13 @@ public class WDCommand extends Command
 		System.out.println("WDCommand: parsing element");
 		id = element.getAttribute("id");
 		if (id == null || id.isEmpty())
-			throw new ProcessException("Missing ID in WD Command");
+			throw new ProcessException("Missing ID in WDCommand");
 		System.out.println("ID: " + id);
 		
 		// path=
 		path = element.getAttribute("path");
 		if (path == null || path.isEmpty())
-			throw new ProcessException("Missing PATH in WD Command");
+			throw new ProcessException("Missing PATH in WDCommand");
 		System.out.println("Path: " + path);
 	}
 	
@@ -52,5 +53,11 @@ public class WDCommand extends Command
 	public String getID()
 	{
 		return id;
+	}
+	
+	@Override
+	public String getPath()
+	{
+		return path;
 	}
 }

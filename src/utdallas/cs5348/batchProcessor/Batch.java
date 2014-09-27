@@ -1,5 +1,6 @@
 package utdallas.cs5348.batchProcessor;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Batch
@@ -9,13 +10,15 @@ public class Batch
 	
 	public Batch()
 	{
+		commands = new LinkedHashMap<String, Command>();
 		System.out.println("created new Batch");
 	}
 	
 	// puts command into Map commands with key set to command's ID tag
 	public void addCommand(Command command)
-	{
+	{					
 		commands.put(command.getID(), command);
+		System.out.println("added command: " + command.getID());
 	}
 	
 	public String getWorkingDir()

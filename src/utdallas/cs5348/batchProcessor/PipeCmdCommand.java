@@ -4,7 +4,7 @@ import org.w3c.dom.Element;
 
 public class PipeCmdCommand extends Command
 {
-	String id;
+	String id, path;
 	
 	@Override
 	public String describe()
@@ -30,5 +30,11 @@ public class PipeCmdCommand extends Command
 	public String getID()
 	{
 		return id;
+	}
+	
+	@Override
+	public String getPath()
+	{
+		return path;
 	}
 }
