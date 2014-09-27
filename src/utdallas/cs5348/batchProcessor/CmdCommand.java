@@ -45,7 +45,7 @@ public class CmdCommand extends Command
 		ProcessBuilder builder = new ProcessBuilder();
 		builder.command(command);
 		builder.directory(new File(workingDir));
-		builder.redirectError(new File(workingDir + "/" + "error.txt"));
+		builder.redirectError(new File(workingDir, "error.txt"));
 		
 		// for batch5 FILE commands, check element IDs if present for OUT:
 		if (b.getCommands().size() > 0)
@@ -59,7 +59,7 @@ public class CmdCommand extends Command
 				{
 					// determine actual file name needed for output:
 					String outFileName = b.getCommands().get(outID).getPath();
-					builder.redirectOutput(new File(workingDir + "/" + outFileName));
+					builder.redirectOutput(new File(workingDir, outFileName));
 				}
 				else // did NOT find matching ID when compared to OUT tag
 				{
