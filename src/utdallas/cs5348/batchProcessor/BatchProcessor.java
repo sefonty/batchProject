@@ -27,10 +27,6 @@ public class BatchProcessor
 		//executeBatch(batch5);
 		
 		System.out.println("all batches executed!");
-=======
-		executeBatch()
-		
->>>>>>> FETCH_HEAD
 	}
 	
 	public static void executeBatch(Batch batch)
