@@ -9,21 +9,29 @@ public class PipeCommand extends Command
 	@Override
 	public String describe()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if (id != null)
+			return "PipeCommand executing: id=" + id;
+		else
+			return "Warning: PipeCommand: no cammand to execute";
 	}
 
 	@Override
 	public void execute(String workingDir, Batch b)
 	{
-		// TODO Auto-generated method stub
-		
+		System.out.println("PipeCommand finished executing");
+		return;
 	}
 
 	@Override
 	public void parse(Element element) throws ProcessException
 	{
-		// TODO Auto-generated method stub
+		System.out.println("PipeCommand: parsing element");
+		
+		// id=
+		id = element.getAttribute("id");
+		if (id == null || id.isEmpty())
+			throw new ProcessException("Missing ID in PipeCommand");
+		System.out.println("ID: " + id);
 	}
 	
 	@Override

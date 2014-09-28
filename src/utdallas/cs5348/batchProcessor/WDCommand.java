@@ -35,8 +35,9 @@ public class WDCommand extends Command
 	@Override
 	public void parse(Element element) throws ProcessException
 	{
-		// id=
 		System.out.println("WDCommand: parsing element");
+		
+		// id=
 		id = element.getAttribute("id");
 		if (id == null || id.isEmpty())
 			throw new ProcessException("Missing ID in WDCommand");

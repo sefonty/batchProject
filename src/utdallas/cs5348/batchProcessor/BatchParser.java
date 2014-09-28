@@ -16,7 +16,7 @@ import org.w3c.dom.NodeList;
  * parse the XML batch files.
  */
 public class BatchParser
-{
+{	
 	protected Batch buildBatch(File batchFile)
 	{
 		Batch newBatch = new Batch();
@@ -30,16 +30,7 @@ public class BatchParser
 
 			Element pnode = doc.getDocumentElement();
 			NodeList nodes = pnode.getChildNodes();
-			for (int idx = 0; idx < nodes.getLength(); idx++)
-			{
-				Node node = nodes.item(idx);
-				if (node.getNodeType() == Node.ELEMENT_NODE)
-				{
-					Element elem = (Element) node;
-					Command newCommand = buildCommand(elem);
-					newBatch.addCommand(newCommand);
-				}
-			}
+			parseNodeList(nodes, newBatch);
 		}
 		catch (Exception e)
 		{
@@ -48,6 +39,27 @@ public class BatchParser
 		}
 		
 		return newBatch;
+	}
+	
+	private void parseNodeList(NodeList nodeList, Batch b) throws ProcessException
+	{
+		for (int idx = 0; idx < nodeList.getLength(); idx++)
+		{
+			Node node = nodeList.item(idx);
+			if (node.getNodeType() == Node.ELEMENT_NODE)
+			{
+				Element elem = (Element) node;
+				Command newCommand = buildCommand(elem); // changes parentNodeName if expected to have children
+				b.addCommand(newCommand);
+				
+				if (node.hasChildNodes())
+				{
+					System.out.println("Parsing child nodes of " + elem.getNodeName());
+					NodeList childNodes = node.getChildNodes();
+					parseNodeList(childNodes, b);
+				}				
+			}
+		}
 	}
 	
 	private Command buildCommand(Element elem) throws ProcessException
@@ -71,9 +83,18 @@ public class BatchParser
 		}
 		else if ("cmd".equalsIgnoreCase(cmdName))
 		{
-			System.out.println("Parsing cmd");
-			cmd = new CmdCommand();
-			cmd.parse(elem);
+			if (elem.getParentNode().getNodeName().equalsIgnoreCase("pipe"))
+			{
+				System.out.println("Parsing pipe cmd");
+				cmd = new PipeCmdCommand();
+				cmd.parse(elem);
+			}
+			else
+			{
+				System.out.println("Parsing cmd");
+				cmd = new CmdCommand();
+				cmd.parse(elem);
+			}
 		}
 		else if ("pipe".equalsIgnoreCase(cmdName))
 		{

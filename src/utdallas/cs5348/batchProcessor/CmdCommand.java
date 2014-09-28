@@ -33,19 +33,26 @@ public class CmdCommand extends Command
 		for (String s : cmdArgs)
 		{
 			command.add(s);
-		}		
+		}
 		
-		if (!(inID == null || inID.isEmpty()))
+		System.out.println("\tCOMMAND LIST:");
+		for (String s : command)
 		{
-			// determine actual file name needed for input:			
-			String inFileName = b.getCommands().get(inID).getPath();
-			command.add(inFileName);
+			System.out.println("\t"+ s);
 		}
 
 		ProcessBuilder builder = new ProcessBuilder();
 		builder.command(command);
 		builder.directory(new File(workingDir));
 		builder.redirectError(new File(workingDir, "error.txt"));
+		
+		if (!(inID == null || inID.isEmpty()))
+		{
+			// determine actual file name needed for input:			
+			String inFileName = b.getCommands().get(inID).getPath();
+			//command.add(inFileName); // NJ: don't put input file name in command array list
+			builder.redirectInput(new File(workingDir, inFileName));
+		}
 		
 		// for batch5 FILE commands, check element IDs if present for OUT:
 		if (b.getCommands().size() > 0)
@@ -71,8 +78,7 @@ public class CmdCommand extends Command
 
 		Process process;
 		process = builder.start();
-		process.waitFor();
-		
+		process.waitFor();		
 		System.out.println("CmdCommand finished executing");
 	}
 
@@ -83,8 +89,9 @@ public class CmdCommand extends Command
 	@Override
 	public void parse(Element element) throws ProcessException
 	{
-		// id=
 		System.out.println("CmdCommand: parsing element");
+		
+		// id=
 		id = element.getAttribute("id");
 		if (id == null || id.isEmpty())
 			throw new ProcessException("Missing ID in CMDCommand");

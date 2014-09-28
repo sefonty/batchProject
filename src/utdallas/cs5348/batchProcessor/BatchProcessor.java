@@ -14,19 +14,20 @@ public class BatchProcessor
 		System.out.println("BatchProcessor started");
 		
 		BatchParser myBatchParser = new BatchParser();
-		batch1 = myBatchParser.buildBatch(new File("work/batch1.mac.xml"));
+		//batch1 = myBatchParser.buildBatch(new File("work/batch1.mac.xml"));
 		//batch1 = myBatchParser.buildBatch(new File("work/batch1.gnu.xml"));
 		//batch1 = myBatchParser.buildBatch(new File("work/batch1.dos.xml"));
-		batch2 = myBatchParser.buildBatch(new File("work/batch2.mac.xml"));
+		//batch2 = myBatchParser.buildBatch(new File("work/batch2.mac.xml"));
 		//batch2 = myBatchParser.buildBatch(new File("work/batch2.gnu.xml"));
 		//batch2 = myBatchParser.buildBatch(new File("work/batch2.dos.xml"));
 		//batch3 = myBatchParser.buildBatch(new File("work/batch3.xml"));
+		batch3 = myBatchParser.buildBatch(new File("work/batch3.test.xml"));
 		//batch4 = myBatchParser.buildBatch(new File("work/batch4.xml"));
 		//batch5 = myBatchParser.buildBatch(new File("work/batch5.xml"));
 		
-		executeBatch(batch1);
-		executeBatch(batch2);
-		//executeBatch(batch3);
+		//executeBatch(batch1);
+		//executeBatch(batch2);
+		executeBatch(batch3);
 		//executeBatch(batch4);
 		//executeBatch(batch5);
 		
