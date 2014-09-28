@@ -21,7 +21,7 @@ public class BatchProcessor
 		//batch2 = myBatchParser.buildBatch(new File("work/batch2.gnu.xml"));
 		//batch2 = myBatchParser.buildBatch(new File("work/batch2.dos.xml"));
 		//batch3 = myBatchParser.buildBatch(new File("work/batch3.xml"));
-		batch3 = myBatchParser.buildBatch(new File("work/batch3.test.xml"));
+		batch3 = myBatchParser.buildBatch(new File("work/batch3.mac.xml"));
 		//batch4 = myBatchParser.buildBatch(new File("work/batch4.xml"));
 		//batch5 = myBatchParser.buildBatch(new File("work/batch5.xml"));
 		
