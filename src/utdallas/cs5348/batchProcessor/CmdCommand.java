@@ -41,8 +41,8 @@ public class CmdCommand extends Command
 			System.out.println("\t"+ s);
 		}
 
-		ProcessBuilder builder = new ProcessBuilder();
-		builder.command(command);
+		ProcessBuilder builder = new ProcessBuilder(command);
+		//builder.command(command);
 		builder.directory(new File(workingDir));
 		builder.redirectError(new File(workingDir, "error.txt"));
 		
@@ -71,14 +71,15 @@ public class CmdCommand extends Command
 				else // did NOT find matching ID when compared to OUT tag
 				{
 					// throw custom exception here...
-					throw new ProcessException("Unable to locate OUT FileCommand with id " + outID);
+					throw new ProcessException("CmdCommand: Unable to locate OUT FileCommand with id " + outID);
 				}
 			}
 		}
 
-		Process process;
-		process = builder.start();
-		process.waitFor();		
+		//Process process;
+		//process = builder.start();
+		final Process process = builder.start();
+		process.waitFor();	
 		System.out.println("CmdCommand finished executing");
 	}
 
@@ -94,14 +95,14 @@ public class CmdCommand extends Command
 		// id=
 		id = element.getAttribute("id");
 		if (id == null || id.isEmpty())
-			throw new ProcessException("Missing ID in CMDCommand");
-		System.out.println("ID: " + id);
+			throw new ProcessException("Missing ID in CmdCommand");
+		System.out.println("\tID: " + id);
 		
 		// path=
 		path = element.getAttribute("path");
 		if (path == null || path.isEmpty())
-			throw new ProcessException("Missing PATH in CMDCommand");
-		System.out.println("Path: " + path);
+			throw new ProcessException("Missing PATH in CmdCommand");
+		System.out.println("\tPath: " + path);
 
 		// args=
 		// Arguments must be passed to ProcessBuilder as a list of
@@ -118,17 +119,17 @@ public class CmdCommand extends Command
 			}
 		}
 		for (String argi: cmdArgs)
-			System.out.println("Arg " + argi);
+			System.out.println("\tArg " + argi);
 
 		// in=
 		inID = element.getAttribute("in");
 		if (!(inID == null || inID.isEmpty()))
-			System.out.println("inID: " + inID);
+			System.out.println("\tinID: " + inID);
 
 		// out=
 		outID = element.getAttribute("out");
 		if (!(outID == null || outID.isEmpty()))
-			System.out.println("outID: " + outID);		
+			System.out.println("\toutID: " + outID);		
 	}
 	
 	@Override
@@ -141,20 +142,5 @@ public class CmdCommand extends Command
 	public String getPath()
 	{
 		return path;
-	}
-	
-	private boolean findMatchingID(Batch b, String key)
-	{
-		Command cmd = null;
-		
-		// check key against all existing keys
-		if (b.getCommands().containsKey(key))
-		{
-			cmd = b.getCommands().get(key);
-			if (cmd.getClass().equals(FileCommand.class)) // may or may not need this line
-				return true;
-		}
-		
-		return false; // did NOT find matching ID when compared to key
 	}
 }

@@ -11,7 +11,7 @@ public class Batch
 	public Batch()
 	{
 		commands = new LinkedHashMap<String, Command>();
-		System.out.println("created new Batch");
+		System.out.println("creating new Batch");
 	}
 	
 	// puts command into Map commands with key set to command's ID tag

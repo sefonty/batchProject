@@ -49,7 +49,7 @@ public class BatchParser
 			if (node.getNodeType() == Node.ELEMENT_NODE)
 			{
 				Element elem = (Element) node;
-				Command newCommand = buildCommand(elem); // changes parentNodeName if expected to have children
+				Command newCommand = buildCommand(elem);
 				b.addCommand(newCommand);
 				
 				if (node.hasChildNodes())

@@ -4,15 +4,14 @@ import org.w3c.dom.Element;
 
 public class WDCommand extends Command
 {
-	private String id, path, inID, outID;
+	private String id, path;
 
 	// used to print a message to the console when the Command is executed
 	@Override
 	public String describe()
 	{
 		if (id != null)
-			return "WDCommand executing: id=" + id + " path=" + path +
-					" in=" + inID + " out=" + outID;
+			return "WDCommand executing: id=" + id + " path=" + path;
 		else
 			return "Warning: WDCommand: no cammand to execute";
 	}
@@ -41,13 +40,13 @@ public class WDCommand extends Command
 		id = element.getAttribute("id");
 		if (id == null || id.isEmpty())
 			throw new ProcessException("Missing ID in WDCommand");
-		System.out.println("ID: " + id);
+		System.out.println("\tID: " + id);
 		
 		// path=
 		path = element.getAttribute("path");
 		if (path == null || path.isEmpty())
 			throw new ProcessException("Missing PATH in WDCommand");
-		System.out.println("Path: " + path);
+		System.out.println("\tPath: " + path);
 	}
 	
 	@Override

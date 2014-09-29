@@ -4,7 +4,8 @@ import org.w3c.dom.Element;
 
 public class PipeCommand extends Command
 {
-	String id, path;
+	private String id, path;
+	public Process process1, process2;
 	
 	@Override
 	public String describe()
@@ -31,7 +32,7 @@ public class PipeCommand extends Command
 		id = element.getAttribute("id");
 		if (id == null || id.isEmpty())
 			throw new ProcessException("Missing ID in PipeCommand");
-		System.out.println("ID: " + id);
+		System.out.println("\tID: " + id);
 	}
 	
 	@Override
