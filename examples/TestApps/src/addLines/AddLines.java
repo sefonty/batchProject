@@ -11,48 +11,32 @@ public class AddLines
 	// Read a list of numbers from stdin and write the sum to stdout
 	public static void main(String[] args)
 	{
-		if (args.length < 2)
-		{
-			System.out.println("Missing Argument(s) for AddLines");
-			System.exit(0);
-		}
-		
-		System.out.println("args[0]: " + args[0]);
-		System.out.println("args[1]: " + args[1]);
-		
-		try
-		{
-			//Reader reader = new InputStreamReader(args[0]);
+		try {
 			Reader reader = new InputStreamReader(System.in);
 			BufferedReader breader = new BufferedReader(reader);
-			String lineRead;
-			int sum = 0;
-			//while ((lineRead = breader.readLine()) != null && !lineRead.isEmpty())
-			while (breader.ready())
-			{
-				lineRead = breader.readLine();
+			String lineRead = null;
+			while ((lineRead = breader.readLine()) != null) {
+				int sum = 0;
 				StringTokenizer st = new StringTokenizer(lineRead);
-				while (st.hasMoreTokens())
-				{
+				while (st.hasMoreTokens()) {
 					String nums = st.nextToken();
-					try
-					{
+					try {
 						int temp = Integer.parseInt(nums);
 						sum += temp;
 					}
-					catch (NumberFormatException ex)
-					{
+					catch (NumberFormatException ex) {
 						System.err.println("Ignoring " + nums);
 						continue;
 					}
 				}
+				System.out.println(sum);
+				System.out.flush();
 			}
-			System.out.println("sum: " + sum);
-			System.out.flush();
+
 		}
-		catch (Exception ex)
-		{
+		catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 	}
+
 }

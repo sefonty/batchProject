@@ -25,7 +25,7 @@ public class FileCommand extends Command
 	@Override
 	public void parse(Element element) throws ProcessException
 	{
-		System.out.println("FileCommand: parsing element");
+		System.out.println("FileCommand: parsing element attributes");
 		
 		// id=
 		id = element.getAttribute("id");

@@ -23,7 +23,10 @@ public class WDCommand extends Command
 		if (path == null || path.isEmpty())
 			throw new ProcessException("Missing PATH in WD Command");
 		else
+		{
 			b.setWorkingDir(path);
+			System.out.println("\tworking directory set to '" + b.getWorkingDir() + "'");
+		}
 		System.out.println("WDCommand finished executing");
 	}
 
@@ -34,7 +37,7 @@ public class WDCommand extends Command
 	@Override
 	public void parse(Element element) throws ProcessException
 	{
-		System.out.println("WDCommand: parsing element");
+		System.out.println("WDCommand: parsing element attributes");
 		
 		// id=
 		id = element.getAttribute("id");

@@ -46,15 +46,33 @@ public class CmdCommand extends Command
 		builder.directory(new File(workingDir));
 		builder.redirectError(new File(workingDir, "error.txt"));
 		
-		if (!(inID == null || inID.isEmpty()))
+		// for batch5 FILE error commands, check element IDs if present for IN:
+		if (b.getCommands().size() > 0)
 		{
-			// determine actual file name needed for input:			
-			String inFileName = b.getCommands().get(inID).getPath();
-			//command.add(inFileName); // NJ: don't put input file name in command array list
-			builder.redirectInput(new File(workingDir, inFileName));
+			if (!(inID == null || inID.isEmpty()))
+			{
+				boolean foundMatchingID = this.findMatchingID(b, inID);
+				
+				// check IN tag against all existing ID tags
+				if (foundMatchingID)
+				{
+					// determine actual file name needed for input:			
+					String inFileName = b.getCommands().get(inID).getPath();
+					//command.add(inFileName); // NJ: don't put input file name in command array list
+					builder.redirectInput(new File(workingDir, inFileName));
+					System.out.println("reading from input file " + inFileName);
+				}
+				else // did NOT find matching ID when compared to IN tag
+				{
+					// throw custom exception here...
+					throw new ProcessException(
+							"\nError Processing Batch: " +
+							"CmdCommand: Unable to locate IN FileCommand with id: " + inID);
+				}
+			}
 		}
 		
-		// for batch5 FILE commands, check element IDs if present for OUT:
+		// for batch5 FILE error commands, check element IDs if present for OUT:
 		if (b.getCommands().size() > 0)
 		{	
 			if (!(outID == null || outID.isEmpty()))
@@ -67,17 +85,18 @@ public class CmdCommand extends Command
 					// determine actual file name needed for output:
 					String outFileName = b.getCommands().get(outID).getPath();
 					builder.redirectOutput(new File(workingDir, outFileName));
+					System.out.println("writing to ouput file " + outFileName);
 				}
 				else // did NOT find matching ID when compared to OUT tag
 				{
 					// throw custom exception here...
-					throw new ProcessException("CmdCommand: Unable to locate OUT FileCommand with id " + outID);
+					throw new ProcessException(
+							"\nError Processing Batch: " +
+							"CmdCommand: Unable to locate OUT FileCommand with id: " + outID);
 				}
 			}
 		}
-
-		//Process process;
-		//process = builder.start();
+		
 		final Process process = builder.start();
 		process.waitFor();	
 		System.out.println("CmdCommand finished executing");
@@ -90,7 +109,7 @@ public class CmdCommand extends Command
 	@Override
 	public void parse(Element element) throws ProcessException
 	{
-		System.out.println("CmdCommand: parsing element");
+		System.out.println("CmdCommand: parsing element attributes");
 		
 		// id=
 		id = element.getAttribute("id");

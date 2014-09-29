@@ -71,13 +71,13 @@ public class BatchParser
 			throw new ProcessException("unable to parse command from " + elem.getTextContent());
 		else if ("wd".equalsIgnoreCase(cmdName))
 		{
-			System.out.println("Parsing wd");
+			System.out.println("parsing wd element");
 			cmd = new WDCommand();
 			cmd.parse(elem);
 		}
 		else if ("file".equalsIgnoreCase(cmdName))
 		{
-			System.out.println("Parsing file");
+			System.out.println("parsing file element");
 			cmd = new FileCommand();
 			cmd.parse(elem);
 		}
@@ -85,20 +85,20 @@ public class BatchParser
 		{
 			if (elem.getParentNode().getNodeName().equalsIgnoreCase("pipe"))
 			{
-				System.out.println("Parsing pipe cmd");
+				System.out.println("parsing pipe cmd element");
 				cmd = new PipeCmdCommand();
 				cmd.parse(elem);
 			}
 			else
 			{
-				System.out.println("Parsing cmd");
+				System.out.println("parsing cmd element");
 				cmd = new CmdCommand();
 				cmd.parse(elem);
 			}
 		}
 		else if ("pipe".equalsIgnoreCase(cmdName))
 		{
-			System.out.println("Parsing pipe");
+			System.out.println("parsing pipe element");
 			cmd = new PipeCommand();
 			cmd.parse(elem);
 		}

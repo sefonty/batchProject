@@ -29,7 +29,7 @@ public class PipeCmdCommand extends Command
 	}
 
 	@Override
-	public void execute(String workingDir, Batch b) throws IOException, ProcessException
+	public void execute(String workingDir, Batch b) throws IOException, ProcessException, InterruptedException
 	{
 		// execute PIPE CMD command here (reference example CmdProcessBuilderStreams.java)
 		List<String> command = new ArrayList<String>();
@@ -49,24 +49,46 @@ public class PipeCmdCommand extends Command
 		builder.directory(new File(workingDir));
 		builder.redirectError(new File(workingDir, "error.txt"));
 
-		//final Process process = builder.start();
 		PipeCommand pc = (PipeCommand)b.getCommands().get(parentID);
 		
-		if (!(inID == null || inID.isEmpty()))
+		// for batch5 FILE error commands, check element IDs if present for IN:
+		if (b.getCommands().size() > 0)
 		{
-			pc.process1 = builder.start();
-			//OutputStream os = process.getOutputStream();
-			OutputStream os = pc.process1.getOutputStream();
-			// determine actual file name needed for input:		
-			String inFileName = b.getCommands().get(inID).getPath();
-			fis = new FileInputStream(new File(workingDir, inFileName));
-			int achar;
-			while ((achar = fis.read()) != -1)
-				os.write(achar);
-			os.close();
+			if (!(inID == null || inID.isEmpty()))
+			{
+				boolean foundMatchingID = this.findMatchingID(b, inID);
+				
+				// check IN tag against all existing ID tags
+				if (foundMatchingID)
+				{
+					pc.pipeProcess1 = builder.start();
+					OutputStream os = pc.pipeProcess1.getOutputStream();
+					// determine actual file name needed for input:		
+					String inFileName = b.getCommands().get(inID).getPath();
+					fis = new FileInputStream(new File(workingDir, inFileName));
+					
+					System.out.println("writing to pipeProcess1's ouput stream from " + inFileName);
+					
+					int achar;
+					while ((achar = fis.read()) != -1)
+					{
+						os.write(achar);
+						//System.out.print((char) achar);
+					}
+					
+					os.close();
+				}
+				else // did NOT find matching ID when compared to IN tag
+				{
+					// throw custom exception here...
+					throw new ProcessException(
+							"\nError Processing Batch: " +
+							"CmdCommand: Unable to locate IN FileCommand with id: " + inID);
+				}
+			}
 		}
 		
-		// for batch5 FILE commands, check element IDs if present for OUT:
+		// for batch5 FILE error commands, check element IDs if present for OUT:
 		if (b.getCommands().size() > 0)
 		{	
 			if (!(outID == null || outID.isEmpty()))
@@ -76,37 +98,50 @@ public class PipeCmdCommand extends Command
 				// check OUT tag against all existing ID tags
 				if (foundMatchingID)
 				{	
-					pc.process2 = builder.start();
+					pc.pipeProcess2 = builder.start();					
+					InputStream is1 = pc.pipeProcess1.getInputStream();
+					OutputStream os2 = pc.pipeProcess2.getOutputStream();
 					
-					//OutputStream os = process.getOutputStream();
-					InputStream is1 = pc.process1.getInputStream();
-					OutputStream os2 = pc.process2.getOutputStream();
-					// determine actual file name needed for input:		
+					System.out.println("writing to pipeProcess2's ouput stream from " +
+									 "pipeProcess1's input stream");
+					
 					int achar;
 					while ((achar = is1.read()) != -1)
+					{
 						os2.write(achar);
-					os2.close();
+						//System.out.print((char) achar);
+					}
 					
+					os2.close();
 					
 					// determine actual file name needed for output:
 					String outFileName = b.getCommands().get(outID).getPath();
 					File outfile = new File(workingDir, outFileName);
 					OutputStream fos = new FileOutputStream(outfile);
-					InputStream is2 = pc.process2.getInputStream();
+					InputStream is2 = pc.pipeProcess2.getInputStream();
+					
+					System.out.println("writing to "+ outFileName + " from " +
+							 "pipeProcess2's input stream");
+					
+					System.out.print("contents of " + outFileName + ": ");
 					while ((achar = is2.read()) != -1)
 					{
 						fos.write(achar);
 						System.out.print((char) achar);
 					}
+					
 					fos.close();
 				}
 				else // did NOT find matching ID when compared to OUT tag
 				{
 					// throw custom exception here...
-					throw new ProcessException("PipeCmdCommand: Unable to locate OUT FileCommand with id " + outID);
+					throw new ProcessException(
+							"\nError Processing Batch: " +
+							"PipeCmdCommand: Unable to locate OUT FileCommand with id: " + outID);
 				}
 			}
 		}
+		System.out.println("PipeCmdCommand finished executing");
 	}
 
 	/** 
@@ -116,7 +151,7 @@ public class PipeCmdCommand extends Command
 	@Override
 	public void parse(Element element) throws ProcessException
 	{
-		System.out.println("PipeCmdCommand: parsing element");
+		System.out.println("PipeCmdCommand: parsing element attributes");
 		
 		// id=
 		id = element.getAttribute("id");
